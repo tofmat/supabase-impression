@@ -4,7 +4,6 @@ import {useRef} from "react";
 import { Video, CloudinaryContext } from "cloudinary-react";
 import {supabase} from "./supabase";
 
-
 export default function Home() {
   const videoRef = useRef();
   const endFunction = async () => {
