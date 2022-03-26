@@ -1,27 +1,14 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { useState, useEffect } from "react";
-// import { useUser } from "../context/user";
-import supabase from "@supabase/supabase-js";
+import {useRef} from "react";
+import { Video, CloudinaryContext } from "cloudinary-react";
+import {supabase} from "./supabase";
+
 
 export default function Home() {
-  const [clicked, setClicked] = useState(0);
-  // const { user } = useUser();
-
-  useEffect(() => {
-    const getInitialClicks = async () => {
-      const { data } = await supabase
-        .from("profiles")
-        .select("clicks")
-        .eq("id", user.id)
-        .single();
-
-        console.log({data})
-    };
-    getInitialClicks()
-  }, []);
-  const incrementCount = () => {
-    setClicked(clicked + 1);
+  const videoRef = useRef();
+  const endFunction = async () => {
+        const { data} = await supabase.rpc('increment', { row_id: 1 })
   };
   return (
     <div className={styles.container}>
@@ -31,13 +18,20 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+        Tracking video impressions in Next.js with Supabase
         </h1>
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+      <CloudinaryContext cloud_name="ugwutotheeshoes">
+        <div>
+          <Video
+            publicId="production_ID_3959604_vnbhqn"
+            width="750px"
+            height="420px"
+            controls
+            innerRef={videoRef}
+            onEnded={endFunction}
+          />
+        </div>
+      </CloudinaryContext>
       </main>
     </div>
   );
